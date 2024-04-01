@@ -24,14 +24,16 @@ export async function scrapeEcommerceProduct(url: string) {
     let title;
     let currentPrice;
     let content;
-    let originalprice;
+    let originalPrice;
     let outofstock = false;
     let images;
     let imageUrl;
     let currency;
     let discountRate;
     let productdata: any;
-    let description
+    let description;
+  
+    
     
     
 
@@ -61,7 +63,7 @@ export async function scrapeEcommerceProduct(url: string) {
                 $('a.price.a-text-price')
             );
 
-            originalprice = extractprice(
+            originalPrice = extractprice(
                 $('#priceblock_ourprice'),
                 $('span.a-price.a-text-price span.a-offscreen'),
                 $('#listPrice'),
@@ -74,8 +76,8 @@ export async function scrapeEcommerceProduct(url: string) {
 
              currentPrice = currentPrice.startsWith('.') ? currentPrice.substring(1) : currentPrice;
              currentPrice = currentPrice.replace(/[^\d,]/g, '');
-             originalprice = originalprice.startsWith('.') ? originalprice.substring(1) : originalprice;
-             originalprice = originalprice.replace(/[^\d,]/g, '');
+             originalPrice = originalPrice.startsWith('.') ? originalPrice.substring(1) : originalPrice;
+             originalPrice = originalPrice.replace(/[^\d,]/g, '');
 
 
             
@@ -109,14 +111,14 @@ export async function scrapeEcommerceProduct(url: string) {
             const discountAmountMatch = discountAmountText.match(/(\d+)/);
             if (discountAmountMatch && !discountRate) { // Proceed if discount amount found and discountRate not directly available
                 let discountAmount = parseFloat(discountAmountMatch[0]);
-                let originalNum = parseFloat(originalprice.replace(/[^\d.]/g, ''));
+                let originalNum = parseFloat(originalPrice.replace(/[^\d.]/g, ''));
                 // Assuming currentPrice and originalprice are correctly extracted and are numerical values
                 let discountPercentage = (discountAmount / originalNum) * 100;
                 discountRate = discountPercentage.toFixed(2); // Convert to string, round to two decimal places
             }
             
             let parsedCurrentPrice = parseFloat(currentPrice.replace(/[^0-9.]/g, ''));
-            let parsedOriginalPrice = parseFloat(originalprice.replace(/[^0-9.]/g, ''));
+            let parsedOriginalPrice = parseFloat(originalPrice.replace(/[^0-9.]/g, ''));
 
             // Ensure valid numbers for calculations (avoid NaN values)
             parsedCurrentPrice = isNaN(parsedCurrentPrice) ? 0 : parsedCurrentPrice;
@@ -135,7 +137,7 @@ export async function scrapeEcommerceProduct(url: string) {
                 image: imageUrl,
                 title,
                 currentPrice: parsedCurrentPrice,
-                originalprice: parsedOriginalPrice,
+                originalPrice: parsedOriginalPrice,
                 priceHistory: [], // Assuming this might be populated elsewhere or in future development
                 discountRate: Number(discountRate),
                 catagory: 'catagory',
@@ -176,7 +178,7 @@ export async function scrapeEcommerceProduct(url: string) {
                 $('a.price.a-text-price')
             );
 
-            originalprice = extractprice(
+            originalPrice = extractprice(
                 $('#priceblock_ourprice'),
                 $('span.a-price.a-text-price span.a-offscreen'),
                 $('#listPrice'),
@@ -188,9 +190,9 @@ export async function scrapeEcommerceProduct(url: string) {
             );
 
             currentPrice = currentPrice.startsWith('.') ? currentPrice.substring(1) : currentPrice;
-             currentPrice = currentPrice.replace(/[^\d,]/g, '');
-             originalprice = originalprice.startsWith('.') ? originalprice.substring(1) : originalprice;
-             originalprice = originalprice.replace(/[^\d,]/g, '');
+            currentPrice = currentPrice.replace(/[^\d,]/g, '');
+            originalPrice = originalPrice.startsWith('.') ? originalPrice.substring(1) : originalPrice;
+            originalPrice = originalPrice.replace(/[^\d,]/g, '');
             
 
             if (!currentPrice) {
@@ -227,14 +229,14 @@ export async function scrapeEcommerceProduct(url: string) {
             const discountAmountMatch = discountAmountText.match(/(\d+)/);
             if (discountAmountMatch && !discountRate) { // Proceed if discount amount found and discountRate not directly available
                 let discountAmount = parseFloat(discountAmountMatch[0]);
-                let originalNum = parseFloat(originalprice.replace(/[^\d.]/g, ''));
+                let originalNum = parseFloat(originalPrice.replace(/[^\d.]/g, ''));
                 // Assuming currentPrice and originalprice are correctly extracted and are numerical values
                 let discountPercentage = (discountAmount / originalNum) * 100;
                 discountRate = discountPercentage.toFixed(2); // Convert to string, round to two decimal places
             }
 
             let parsedCurrentPrice = parseFloat(currentPrice.replace(/[^0-9.]/g, ''));
-            let parsedOriginalPrice = parseFloat(originalprice.replace(/[^0-9.]/g, ''));
+            let parsedOriginalPrice = parseFloat(originalPrice.replace(/[^0-9.]/g, ''));
 
             // Ensure valid numbers for calculations (avoid NaN values)
             parsedCurrentPrice = isNaN(parsedCurrentPrice) ? 0 : parsedCurrentPrice;
@@ -254,10 +256,10 @@ export async function scrapeEcommerceProduct(url: string) {
                 image: imageUrl,
                 title,
                 currentPrice: parsedCurrentPrice,
-                originalprice: parsedOriginalPrice,
+                originalPrice: parsedOriginalPrice,
                 priceHistory: [], // Assuming this might be populated elsewhere or in future development
                 discountRate: Number(discountRate),
-                catagory: 'catagory',
+                category: 'category',
                 reviewCount: 0,
                 stars: 0,
                 outofstock: outofstock,
@@ -295,7 +297,7 @@ export async function scrapeEcommerceProduct(url: string) {
         // Enhanced error logging
         console.error('Error during scraping:', error instanceof Error ? error.message : error);
     }
-
-    console.log(productdata)
+     return productdata;
+     //console.log(productdata)
     //console.log({ title, currentPrice, originalprice, outofstock,  imageUrl, currency, discountRate });
 }

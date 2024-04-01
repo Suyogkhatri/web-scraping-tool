@@ -68,7 +68,9 @@ export function extractDescription($: any) {
       'td.prodDetAttrValue',
       '.pdp-product-highlights li',
       '.pdp-mod-specification .specification-keys .key-li',
-      '.product.attribute.desciption .value li'
+      '.product.attribute.desciption .value li',
+      '.a-list-item',
+      '.a-size-base prodDetAttrValue'
       // Add more selectors here if needed
     ];
   
@@ -113,29 +115,29 @@ export function extractDescription($: any) {
   
   export function getAveragePrice(priceList: PriceHistoryItem[]) {
     const sumOfPrices = priceList.reduce((acc, curr) => acc + curr.price, 0);
-    const averagePrice = sumOfPrices / priceList.length || 0;
+    const average = sumOfPrices / priceList.length || 0;
   
-    return averagePrice;
+    return average;
   }
   
-//   export const getEmailNotifType = (
-//     scrapedProduct: Product,
-//     currentProduct: Product
-//   ) => {
-//     const lowestPrice = getLowestPrice(currentProduct.priceHistory);
+  export const getEmailNotifType = (
+    scrapedProduct: Product,
+    currentProduct: Product
+  ) => {
+    const lowestPrice = getLowestPrice(currentProduct.priceHistory);
   
-//     if (scrapedProduct.currentPrice < lowestPrice) {
-//       return Notification.LOWEST_PRICE as keyof typeof Notification;
-//     }
-//     if (!scrapedProduct.isOutOfStock && currentProduct.isOutOfStock) {
-//       return Notification.CHANGE_OF_STOCK as keyof typeof Notification;
-//     }
-//     if (scrapedProduct.discountRate >= THRESHOLD_PERCENTAGE) {
-//       return Notification.THRESHOLD_MET as keyof typeof Notification;
-//     }
+    if (scrapedProduct.currentPrice < lowestPrice) {
+      return Notification.LOWEST_PRICE as keyof typeof Notification;
+    }
+    if (!scrapedProduct.isOutOfStock && currentProduct.isOutOfStock) {
+      return Notification.CHANGE_OF_STOCK as keyof typeof Notification;
+    }
+    if (scrapedProduct.discountRate >= THRESHOLD_PERCENTAGE) {
+      return Notification.THRESHOLD_MET as keyof typeof Notification;
+    }
   
-//     return null;
-//   };
+    return null;
+  };
   
   export const formatNumber = (num: number = 0) => {
     return num.toLocaleString(undefined, {

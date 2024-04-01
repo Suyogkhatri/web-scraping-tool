@@ -2,8 +2,12 @@ import HeroCarousel from "@/components/HeroCarousel"
 import Searchbar from "@/components/Searchbar"
 import Image from "next/image"
 import { ReactNode } from "react"
+import { getAllProduct } from "@/lib/action"
+import ProductCard from "@/components/productCard"
 
-const Home = () => {
+const Home = async () => {
+  const allProducts = await getAllProduct();
+  
   function product(value: string, index: number, array: string[]): ReactNode {
     throw new Error("Function not implemented.")
   }
@@ -45,12 +49,11 @@ const Home = () => {
     </section>
 
     <section className="trending-section">
-      <h2 className="section-text">Trending</h2>
+      <h2 className="section-text">Scraped Products History</h2>
 
       <div className="flex flex-wrap gap-x-8 gap-y-16">
-        {[ 'Apple Iphone 15','Book', 'perfumes'].map
-        ((product) => (
-          <div>{product}</div>
+        {allProducts?.map((product) => (
+          <ProductCard key={product._id}  product = {product}/>
         ))}        
       </div>
     </section>

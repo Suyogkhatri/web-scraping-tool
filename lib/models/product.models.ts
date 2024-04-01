@@ -16,12 +16,13 @@ const productSchema = new mongoose.Schema({
     average: { type: Number },
     discountRate: { type: Number },
     description: { type: String },
-    catagory: { type: String },
+    category: { type: String },
     reviewCount: { type: Number },
     isOutOfStock: { type: Boolean, default: false },
     Users: [{
         email: { type: String, required: true, lowercase: true }
-    }], default:[],
+    }], 
+    default: [],
 }, { timestamps: true });
 
 const Product = mongoose.models.Product || mongoose.model('Product', productSchema);
