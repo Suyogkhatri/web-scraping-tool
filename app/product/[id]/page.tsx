@@ -1,3 +1,4 @@
+
 import { getProductById, getSimilarProduct } from '@/lib/action'
 import { redirect } from 'next/navigation'
 import React from 'react'
@@ -8,6 +9,10 @@ import { formatNumber } from '@/lib/utils'
 import PriceinfoCard from '@/components/PriceinfoCard'
 import ProductCard from '@/components/productCard'
 import Modal from '@/components/Modal'
+// import KhaltiCheckoutButton from '@/components/KhaltiCheckoutButton'
+
+
+
 
 type Props = {
   params: {id: string}
@@ -18,6 +23,11 @@ const productDetails = async ({params:{ id }} : Props) => {
   if(!product) redirect('/')
   
   const similarProduct = await getSimilarProduct(id);
+
+  function handleBuyNowClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+    throw new Error('Function not implemented.')
+  }
+
 
   return (
     <div className="product-container">
@@ -179,33 +189,25 @@ const productDetails = async ({params:{ id }} : Props) => {
             Product Description
           </h3>
 
-          <div className="flex flex-col gap-4">
-            {product?.description?.split("\n")}
-
-          </div>
+          <ul className="list-disc pl-5">
+      {product?.description?.split("\n").map((line, index) => (
+        <li key={index}>{line}</li>
+      ))}
+    </ul>
 
         </div>
 
-        <button className="btn w-fit mx-auto flex item-center 
-        justify-center gap-3 min-w[200px]">
-          <Image
-            src="/assets/icons/bag.svg"
-            alt="check"
-            width={22}
-            height={22}
-          />
-
-          <Link 
-           href={product.url} 
-           className="Text-base  text-white"
-           target="_blank"
-           >
-            
-            Buy Now
-           
-          </Link>
-
-        </button>
+         {/* <KhaltiCheckoutButton product={product} /> */}
+        <button className="btn w-fit mx-auto flex item-center justify-center gap-3 min-w[200px]"
+              >
+        <Image
+          src="/assets/icons/bag.svg"
+          alt="check"
+          width={22}
+          height={22}
+        />
+        <span className="text-base text-white">Buy Now</span>
+      </button>
       </div>
 
       {similarProduct && similarProduct?.length > 0 && (

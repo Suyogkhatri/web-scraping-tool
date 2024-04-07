@@ -10,8 +10,11 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.18",
+    "@stripe/react-stripe-js": "^2.6.2",
+    "@stripe/stripe-js": "^3.2.0",
     "axios": "^1.6.7",
     "cheerio": "^1.0.0-rc.12",
+    "khalti-checkout-web": "^2.2.0",
     "mongodb": "^6.4.0",
     "mongoose": "^8.2.1",
     "next": "14.0.4",
@@ -19,7 +22,8 @@
     "puppeteer": "^22.2.0",
     "react": "^18",
     "react-dom": "^18",
-    "react-responsive-carousel": "^3.2.23"
+    "react-responsive-carousel": "^3.2.23",
+    "stripe": "^14.24.0"
   },
   "devDependencies": {
     "@types/node": "^20",
