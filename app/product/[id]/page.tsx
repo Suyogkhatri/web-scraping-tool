@@ -9,10 +9,16 @@ import { formatNumber } from '@/lib/utils'
 import PriceinfoCard from '@/components/PriceinfoCard'
 import ProductCard from '@/components/productCard'
 import Modal from '@/components/Modal'
+// import BuyNowButton, { DynamicBuyNowButton } from '@/components/BuyNowButton'
+import dynamic from 'next/dynamic';
+
+
+
 // import KhaltiCheckoutButton from '@/components/KhaltiCheckoutButton'
 
-
-
+const DynamicBuyNowButton = dynamic(() => import('@/components/BuyNowButton'), {
+  ssr: false,
+});
 
 type Props = {
   params: {id: string}
@@ -24,9 +30,9 @@ const productDetails = async ({params:{ id }} : Props) => {
   
   const similarProduct = await getSimilarProduct(id);
 
-  function handleBuyNowClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
-    throw new Error('Function not implemented.')
-  }
+  // function handleBuyNowClick(event: React.MouseEvent<HTMLButtonElement, MouseEvent>): void {
+  //   throw new Error('Function not implemented.')
+  // }
 
 
   return (
@@ -197,8 +203,9 @@ const productDetails = async ({params:{ id }} : Props) => {
 
         </div>
 
+        <DynamicBuyNowButton productId={product._id ? product._id.toString() : 'defaultProductId'} />
          {/* <KhaltiCheckoutButton product={product} /> */}
-        <button className="btn w-fit mx-auto flex item-center justify-center gap-3 min-w[200px]"
+        {/* <button className="btn w-fit mx-auto flex item-center justify-center gap-3 min-w[200px]"
               >
         <Image
           src="/assets/icons/bag.svg"
@@ -207,7 +214,7 @@ const productDetails = async ({params:{ id }} : Props) => {
           height={22}
         />
         <span className="text-base text-white">Buy Now</span>
-      </button>
+      </button> */}
       </div>
 
       {similarProduct && similarProduct?.length > 0 && (

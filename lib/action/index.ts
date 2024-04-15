@@ -8,6 +8,9 @@ import { getAveragePrice, getHighestPrice, getLowestPrice } from "../utils";
 import { User } from "@/types";
 import { generateEmailBody, sendEmail } from "../nodemailer";
 
+
+
+
 export async function scrapeAndStoreProduct(productUrl: string) { 
     if(!productUrl) return;
 
@@ -50,7 +53,6 @@ export async function scrapeAndStoreProduct(productUrl: string) {
         throw new Error(`Failed to create or update product: ${error.message}`);
         
     }
-    
 
 
 }

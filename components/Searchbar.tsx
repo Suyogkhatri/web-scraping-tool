@@ -10,6 +10,7 @@ const isValidEcommerceProductURL = (url: string) => {
     
     if(
       hostname.includes ('amazon.com') || 
+      hostname.includes ('amazon.in') || 
       hostname.includes ('amazon.') || 
       hostname.includes ('daraz.com.np') || 
       hostname.includes ('darza.') || 

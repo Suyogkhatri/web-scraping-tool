@@ -42,3 +42,5 @@ export type PriceHistoryItem = {
     title: string;
     url: string;
   };
+
+  export type Uri = string ;

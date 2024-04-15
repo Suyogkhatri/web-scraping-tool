@@ -1,6 +1,7 @@
 import { PriceHistoryItem, Product } from "@/types";
 import { CheerioAPI } from 'cheerio';
 
+
 const Notification = {
   WELCOME: 'WELCOME',
   CHANGE_OF_STOCK: 'CHANGE_OF_STOCK',
@@ -61,8 +62,8 @@ export function findCurrencySymbol($: CheerioAPI): string {
 export function extractDescription($: any) {
     // these are possible elements holding description of the product
     const selectors = [
-      ".a-unordered-list .a-list-item",
-      ".a-expander-content p",
+      // ".a-unordered-list .a-list-item",
+      // ".a-expander-content p",
       '#productDetails_techSpec_section_1 tr',
       'th.prodDetSectionEntry',
       'td.prodDetAttrValue',

@@ -22,7 +22,7 @@
         
 //     }
 // }
-import mongoose from 'mongoose';
+import mongoose, { connection } from 'mongoose';
 
 // Initially, we're not connected to the database
 let isConnected = false;
@@ -35,6 +35,7 @@ export const connectToDB = async () => {
     // If already connected, no need to connect again
     if (isConnected) {
         console.log('Using existing database connection');
+        connection.setMaxListeners(20);
         return;
     }
 

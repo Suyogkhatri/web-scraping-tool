@@ -1,25 +1,21 @@
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import * as cheerio from 'cheerio';
 import puppeteer from 'puppeteer';
-import { extractCurrency, extractDescription, extractprice, findCurrencySymbol } from '../utils';
+import {  extractDescription, extractprice, findCurrencySymbol } from '../utils';
+import https from 'https';
+import { HttpsProxyAgent } from 'https-proxy-agent';
+import { Agent as HttpsAgent } from 'https';
 
-export async function scrapeEcommerceProduct(url: string) {
+
+
+export async function scrapeEcommerceProduct(url: string) { 
+    
     if (!url) return;
 
-    const username = String(process.env.BRIGHT_DATA_USERNAME);
-    const password = String(process.env.BRIGHT_DATA_PASSWORD);
-    const port = 22225;
-    const session_id = (1000000 * Math.random()) | 0;
+    const scraperApiKey = process.env.SCRAPERAPI_KEY; // Replace with your ScraperAPI key
+  const targetUrl = encodeURIComponent(url);
     
-    const option = {
-        auth: {
-            username: `${username}-session-${session_id}`,
-            password,
-        },
-        host: 'brd.superproxy.io',
-        port,
-        rejectUnauthorized: false
-    };
+    
 
     let title;
     let currentPrice;
@@ -39,7 +35,8 @@ export async function scrapeEcommerceProduct(url: string) {
 
     try {
         // Attempt to fetch the page content with Axios
-        const { data } = await axios.get(url);
+        const apiUrl = `http://api.scraperapi.com?api_key=${scraperApiKey}&url=${targetUrl}`;
+        const { data } = await axios.get(apiUrl);
         content = data;
 
         // If Axios fetch was successful and content is available
@@ -154,11 +151,36 @@ export async function scrapeEcommerceProduct(url: string) {
         }
 
         // If title or currentPrice wasn't found using Cheerio, fallback to Puppeteer
-        if (!title || !currentPrice) {
-            console.log('Using Puppeteer for dynamic content...');
-            const browser = await puppeteer.launch();
+        if (!title || !currentPrice || !originalPrice || !images || !description) {
+           
+            // console.log('Using Puppeteer for dynamic content...');
+            // const browser = await puppeteer.launch();
+            // const page = await browser.newPage();
+            // await page.goto(url, { waitUntil: 'networkidle2' });
+            // content = await page.content();
+            // await browser.close(); 
+            console.log('Using Puppeteer with ScraperAPI for dynamic content...');
+
+// Load your ScraperAPI key from environment variables
+            const scraperApiKey = process.env.SCRAPERAPI_KEY;
+
+            const browser = await puppeteer.launch({
+                args: [
+                    '--no-sandbox',
+                    '--disable-setuid-sandbox',
+                ],
+                headless: true,
+            });
+
             const page = await browser.newPage();
-            await page.goto(url, { waitUntil: 'networkidle2' });
+
+            // Modify the URL to use ScraperAPI
+            // Ensure your original URL is fully encoded as a parameter to the ScraperAPI endpoint
+            const targetUrl = encodeURIComponent(url);
+            const scraperApiUrl = `http://api.scraperapi.com?api_key=${scraperApiKey}&url=${targetUrl}`;
+
+            await page.goto(scraperApiUrl, { waitUntil: 'networkidle2' });
+
             content = await page.content();
             await browser.close();
 
@@ -300,4 +322,4 @@ export async function scrapeEcommerceProduct(url: string) {
      return productdata;
      //console.log(productdata)
     //console.log({ title, currentPrice, originalprice, outofstock,  imageUrl, currency, discountRate });
-}
+};
