@@ -8,7 +8,7 @@ const nextConfig = {
       { hostname: 'm.media-amazon.com' },
       { hostname: 'm.media-amazon.in' },
       { hostname: 'static-01.daraz.com.np' },
-      { hostname: 'static.sastodeal.com' },
+      // { hostname: 'static.sastodeal.com' },
       { hostname: 'laz-img-cdn.alicdn.com' }
     ]
   }
