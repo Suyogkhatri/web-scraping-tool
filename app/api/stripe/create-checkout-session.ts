@@ -1,7 +1,11 @@
+import Product from '@/lib/models/product.models';
+import { connectToDB } from '@/lib/mongoose';
 import { NextApiRequest, NextApiResponse } from 'next';
 import Stripe from 'stripe';
 
 // Ensure the Stripe secret key is available, otherwise throw an error.
+
+
 const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
 if (!stripeSecretKey) {
   console.error("Stripe secret key is missing.");
@@ -12,20 +16,27 @@ const stripe = new Stripe(stripeSecretKey, {
   apiVersion: '2023-10-16', // Use a date that's correct for the version of the Stripe API you're using
 });
 
-// Mock function to simulate fetching product details from a database
-// Replace with actual database fetching logic
+
+
 async function getProductDetails(productId: string) {
-  // Here you would normally look up the product by its ID in your database
-  // For demonstration purposes, I'm returning a mock product object
+  // Look up the product by its ID in your database
+  const product = await Product.findById(productId); // Using Mongoose's findById method
+
+  if (!product) {
+    return null; // Return null if no product is found
+  }
+
+  // Return the product details
   return {
-    id: productId,
-    name: 'T-shirt',
-    imageUrl: 'https://example.com/t-shirt.jpg',
-    price: 2000, // In cents, meaning $20.00
+    id: product.id,
+    name: product.title, // Assuming your product model uses 'title' for the name
+    imageUrl: product.image, // Assuming your product model uses 'image' for the image URL
+    price: product.currentPrice * 100, // Convert to cents if stored as dollars
   };
 }
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  await connectToDB();
   console.log("API route hit", req.method, req.url);
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
@@ -60,7 +71,7 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         quantity: 1,
       }],
       mode: 'payment',
-      success_url: `${req.headers.origin}/success?session_id={session._id}`,
+      success_url: `${req.headers.origin}/success?session_id={session.id}`,
       cancel_url: `${req.headers.origin}/canceled`,
     });
 
