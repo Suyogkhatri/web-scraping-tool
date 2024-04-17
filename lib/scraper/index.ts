@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import * as cheerio from 'cheerio';
 import puppeteer from 'puppeteer';
-import {  extractDescription, extractprice, findCurrencySymbol } from '../utils';
+import {  extractDescription, extractprice, findCurrencySymbol, sleep } from '../utils';
 import https from 'https';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import { Agent as HttpsAgent } from 'https';
@@ -51,7 +51,7 @@ export async function scrapeEcommerceProduct(url: string) {
  
 
             currentPrice = extractprice(
-                $('span.price.product-type-variable-price'),
+               // $('span.price.product-type-variable-price'),
                 $('.priceToPay span.a-price-whole'),
                 $('a.size.base.acolor-price'),
                 $('.a-button-select .a-color-base'),
@@ -61,10 +61,12 @@ export async function scrapeEcommerceProduct(url: string) {
             );
 
             originalPrice = extractprice(
-                $('#priceblock_ourprice'),
-                $('span.a-price.a-text-price span.a-offscreen'),
-                $('#listPrice'),
-                $('#priceblock_dealprice'),
+                //$('#priceblock_ourprice'),
+                $('span.a-price.a-text-price .a-offscreen').first(),
+               // $('.a-price-whole'),
+                //$('span.a-price.a-text-price span.a-offscreen'),
+               // $('#listPrice'),
+                //$('#priceblock_dealprice'),
                 $('.a-size-base.a-colour-price'),
                 $('.old-price .price'),
                 $('.pdp-price.pdp-price_type_deleted')
@@ -174,6 +176,7 @@ export async function scrapeEcommerceProduct(url: string) {
 
             const page = await browser.newPage();
 
+        
             // Modify the URL to use ScraperAPI
             // Ensure your original URL is fully encoded as a parameter to the ScraperAPI endpoint
             const targetUrl = encodeURIComponent(url);
@@ -191,7 +194,7 @@ export async function scrapeEcommerceProduct(url: string) {
                     $('span.pdp-price_type_normal').text().trim();
 
             currentPrice = extractprice(
-                $('span.price.product-type-variable-price'),
+                //$('span.price.product-type-variable-price'),
                 $('.priceToPay span.a-price-whole'),
                 $('a.size.base.acolor-price'),
                 $('.a-button-select .a-color-base'),
@@ -201,10 +204,11 @@ export async function scrapeEcommerceProduct(url: string) {
             );
 
             originalPrice = extractprice(
-                $('#priceblock_ourprice'),
-                $('span.a-price.a-text-price span.a-offscreen'),
-                $('#listPrice'),
-                $('#priceblock_dealprice'),
+                //$('#priceblock_ourprice'),
+                $('span.a-price.a-text-price .a-offscreen').first(),
+                //$('.a-price-whole'),
+                //$('#listPrice'),
+                //$('#priceblock_dealprice'),
                 $('.a-size-base.a-colour-price'),
                 $('.old-price .price'),
                 $('.pdp-price.pdp-price_type_deleted')
