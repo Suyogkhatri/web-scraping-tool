@@ -18,7 +18,10 @@ const isValidEcommerceProductURL = (url: string) => {
       hostname.includes ('sastodeal.') || 
       hostname.endsWith ('amazon') || 
       hostname.endsWith ('daraz')|| 
-      hostname.endsWith ('sastodeal')
+      hostname.endsWith ('sastodeal')||
+      hostname.includes ('thulo.com')||
+      hostname.includes ('thulo.')||
+      hostname.includes ('thulo')
       ){
         return true;
       }

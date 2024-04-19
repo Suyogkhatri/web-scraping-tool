@@ -1,7 +1,7 @@
 import axios, { AxiosRequestConfig } from 'axios';
 import * as cheerio from 'cheerio';
 import puppeteer from 'puppeteer';
-import {  extractDescription, extractprice, findCurrencySymbol, sleep } from '../utils';
+import {  extractDescription, extractprice, findCurrencySymbol,  } from '../utils';
 import https from 'https';
 import { HttpsProxyAgent } from 'https-proxy-agent';
 import { Agent as HttpsAgent } from 'https';
@@ -47,8 +47,8 @@ export async function scrapeEcommerceProduct(url: string) {
             title = $('#productTitle').text().trim() || 
                     $('span.base[data-ui-id="page-title-wrapper"]').text().trim() ||
                     $('.pdp-mod-product-badge-title').text().trim()||
-                    $('span.pdp-price_type_normal').text().trim();
- 
+                    $('span.pdp-price_type_normal').text().trim()||
+                    $('#et_prod_title').text().trim();
 
             currentPrice = extractprice(
                // $('span.price.product-type-variable-price'),
@@ -64,7 +64,7 @@ export async function scrapeEcommerceProduct(url: string) {
                 //$('#priceblock_ourprice'),
                 $('span.a-price.a-text-price .a-offscreen').first(),
                // $('.a-price-whole'),
-                //$('span.a-price.a-text-price span.a-offscreen'),
+                $('span.a-offscreen'),
                // $('#listPrice'),
                 //$('#priceblock_dealprice'),
                 $('.a-size-base.a-colour-price'),
@@ -90,6 +90,7 @@ export async function scrapeEcommerceProduct(url: string) {
                         $('.fotorama__stage__frame img').attr('src') ||
                         $('.gallery-preview-panel__content img').attr('src') ||
                         $('.gallery-preview-panel__content img.gallery-preview-panel__image').attr('src') ||
+                        $('.ty-pict.cm-image').attr('src')||
                         '{}'
              try {
                
@@ -191,7 +192,9 @@ export async function scrapeEcommerceProduct(url: string) {
             title = $('#productTitle').text().trim() || 
                     $('span.base[data-ui-id="page-title-wrapper"]').text().trim() ||
                     $('.pdp-mod-product-badge-title').text().trim()||
-                    $('span.pdp-price_type_normal').text().trim();
+                    $('span.pdp-price_type_normal').text().trim()||
+                    $('#et_prod_title').text().trim();
+
 
             currentPrice = extractprice(
                 //$('span.price.product-type-variable-price'),
@@ -205,6 +208,7 @@ export async function scrapeEcommerceProduct(url: string) {
 
             originalPrice = extractprice(
                 //$('#priceblock_ourprice'),
+                $('span.a-offscreen'),
                 $('span.a-price.a-text-price .a-offscreen').first(),
                 //$('.a-price-whole'),
                 //$('#listPrice'),
@@ -235,6 +239,7 @@ export async function scrapeEcommerceProduct(url: string) {
             $('.fotorama__stage__frame img').attr('src') ||
             $('.gallery-preview-panel__content img').attr('src') ||
             $('.gallery-preview-panel__content img.gallery-preview-panel__image').attr('src') ||
+            $('.ty-pict.cm-image').attr('src')||
              '{ }'           
 
              try {
@@ -324,6 +329,6 @@ export async function scrapeEcommerceProduct(url: string) {
         console.error('Error during scraping:', error instanceof Error ? error.message : error);
     }
      return productdata;
-     //console.log(productdata)
+    // console.log(productdata)
     //console.log({ title, currentPrice, originalprice, outofstock,  imageUrl, currency, discountRate });
 };

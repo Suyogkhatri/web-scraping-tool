@@ -1,8 +1,8 @@
 'use client'
-// import dynamic from 'next/dynamic';
-// import { handleBuyNowClick } from "@/lib/stripeCheckout";
-
+import dynamic from 'next/dynamic';
 import { handleBuyNowClick } from "@/lib/stripeCheckout";
+
+// import { handleBuyNowClick } from "@/lib/stripeCheckout";
 
 // const BuyNowButton = ({ productId }: { productId?: string }) => {
 //     return (

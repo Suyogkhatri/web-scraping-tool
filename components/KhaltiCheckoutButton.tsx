@@ -1,58 +1,33 @@
-// // 'use client'
-// import React, { useEffect, useState } from 'react';
-// import KhaltiCheckout from 'khalti-checkout-web';
-
-// interface Product {
-//   _id: string;
-//   title: string;
-//   currentPrice: number;
-// }
+ 
+// import { useKhaltiPayment } from '@/hooks/useKhaltiPayment';
+// import { Product } from '@/types';
+// import React from 'react';
 
 // interface KhaltiCheckoutButtonProps {
 //   product: Product;
 // }
 
-// export default function KhaltiCheckoutButton({ product }: KhaltiCheckoutButtonProps) {
-//   const [checkout, setCheckout] = useState<any>(null);
+// const KhaltiCheckoutButton: React.FC<KhaltiCheckoutButtonProps> = ({ product }) => {
+//     // Use the custom hook to manage KhaltiCheckout
+//     const checkout = useKhaltiPayment(product);
 
-//   useEffect(() => {
-//     if (typeof window !== 'undefined') {
-//       const config = {
-//         publicKey: "test_public_key_74d5c8f1a7a44323a2d0e8531ca9f508",
-//         productIdentity: product._id,
-//         productName: product.title,
-//         productUrl: `http://localhost:3000/product/${product._id}`,
-//         eventHandler: {
-//           onSuccess: (payload: any) => {
-//             console.log("Payment Successful", payload);
-//           },
-//           // Add other event handlers as needed.
-//         },
-//         amount: product.currentPrice * 100,
-//       };
-
-//       setCheckout(new KhaltiCheckout(config));
+//     // If product is not available, display an error message
+//     if (!product || product._id === undefined) {
+//         return <div>Product is not available</div>;
 //     }
-//   }, [product]);
 
+//     // If checkout is not initialized, display a loading state
+//     if (!checkout) {
+//         return <button disabled>Loading payment options...</button>;
+//     }
 
-  
-//   const handlePayment = () => {
-//     checkout?.show({ amount: product.currentPrice * 100 });
-//   };
+//     // Function to handle payment action
+//     const handlePayment = () => {
+//         checkout.show({ amount: product.currentPrice});
+//     };
 
-//   return (
-//     <button className="btn w-fit mx-auto flex items-center justify-center gap-3 min-w[200px]" onClick={handlePayment}>
-//       <span className="text-base text-white">Buy Now</span>
-//     </button>
-//   );
-// }
+//     // Render the button
+//     return <button onClick={handlePayment}>Buy Now</button>;
+// };
 
- 
-//  // Ensure product is in the dependency array if its properties are used to configure KhaltiCheckout
-
-//   // Define button or other UI elements to trigger Khalti checkout here
-
-  
-
-  
+// export default KhaltiCheckoutButton;

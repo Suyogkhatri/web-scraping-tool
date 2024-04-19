@@ -18,7 +18,7 @@ export const handleBuyNowClick = async (productId: string) => { // Assuming prod
 
   // Call your backend to create the checkout session
   try {
-    const response = await fetch('./api/stripe/create-checkout-session', {
+    const response = await fetch('/api/stripe/create-checkout-session', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

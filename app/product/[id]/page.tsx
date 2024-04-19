@@ -14,6 +14,7 @@ import dynamic from 'next/dynamic';
 
 
 
+
 // import KhaltiCheckoutButton from '@/components/KhaltiCheckoutButton'
 
 const DynamicBuyNowButton = dynamic(() => import('@/components/BuyNowButton'), {
@@ -110,6 +111,9 @@ const productDetails = async ({params:{ id }} : Props) => {
               <p className="text-[34px] text-secondary font-bold">
                 {product.currency} {formatNumber(product.currentPrice)}
               </p>
+
+              
+              
               <p className="text-[22px] text-black opacity-50 line-through">
                 {product.currency} {formatNumber(product.originalPrice)}
               </p>
